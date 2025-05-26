@@ -11,7 +11,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -36,7 +35,7 @@ public class UserOrder {
 	@ManyToOne
 	@JoinColumn(name="user_id", nullable = false, referencedColumnName = "id")
 	@JsonProperty
-    private User user;
+    private AppUser user;
 	
 	@JsonProperty
 	@Column
@@ -58,11 +57,11 @@ public class UserOrder {
 		this.items = items;
 	}
 
-	public User getUser() {
+	public AppUser getUser() {
 		return user;
 	}
 
-	public void setUser(User user) {
+	public void setUser(AppUser user) {
 		this.user = user;
 	}
 	
