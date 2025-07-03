@@ -15,7 +15,7 @@ import jakarta.persistence.Table;
 
 
 @Entity
-@Table(name = "user")
+@Table(name = "users")
 public class AppUser {
 
 	@Id
@@ -34,8 +34,10 @@ public class AppUser {
 	@JsonIgnore
     private Cart cart;
 
+	@JsonProperty
 	private String password;
 
+	@JsonProperty
 	private String role;
 
 	public AppUser(String username, Cart cart, String password, String role) {

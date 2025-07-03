@@ -1,5 +1,6 @@
 package com.example.demo.Configuration;
 
+import com.example.demo.Services.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -22,19 +23,29 @@ public class Security {
     private JwtAuthFilter jwtAuthFilter;
 
     @Autowired
-    private UserDetailsService userDetailsService;
+    private CustomUserDetailsService userDetailsService;
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable())
-                .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/login", "/public/**").permitAll()
-                        .anyRequest().authenticated()
-                )
-                .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
-    }
+
+@Bean
+public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http
+            .csrf(csrf -> csrf
+                    .ignoringRequestMatchers("/auth/login", "/h2/**") // ⛔ No CSRF for login or H2 console
+            )
+            .authorizeHttpRequests(auth -> auth
+                    .requestMatchers("/auth/login", "/public/**", "/h2/**").permitAll()
+                    .anyRequest().authenticated()
+            )
+            .headers(headers -> headers
+                    .frameOptions(frame -> frame.sameOrigin()) // Needed for H2 console
+            )
+            .sessionManagement(sess -> sess
+                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            )
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
+
+    return http.build();
+}
 
     @Bean
     public AuthenticationManager authManager(HttpSecurity http) throws Exception {
@@ -47,5 +58,6 @@ public class Security {
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
+
     }
 }

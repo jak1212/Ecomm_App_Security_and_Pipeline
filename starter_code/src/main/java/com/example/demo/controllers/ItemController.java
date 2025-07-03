@@ -36,5 +36,15 @@ public class ItemController {
 				: ResponseEntity.ok(items);
 			
 	}
+
+	@GetMapping("/all")
+	public ResponseEntity<List<Item>> getAllItems() {
+		List<Item> items = itemRepository.findAll();
+		return items == null || items.isEmpty() ? ResponseEntity.notFound().build()
+				: ResponseEntity.ok(items);
+
+	}
+
+
 	
 }

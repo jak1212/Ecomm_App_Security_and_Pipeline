@@ -1,2 +1,2 @@
-insert into item (name, price, description) values ('Round Widget', 2.99, 'A widget that is round');
-insert into item (name, price, description) values ('Square Widget', 1.99, 'A widget that is square');
+INSERT INTO users (username, password, role, cart_id)
+VALUES ('testuser', '$2a$10$3PX4RXzK7cOsXG0Aly6IS.07OQKc83LeaX2RtDpr/NG83RzV3n9wO', 'USER', NULL);
